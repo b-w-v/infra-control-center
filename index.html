@@ -155,11 +155,148 @@
             padding: 0.75rem 1rem;
             cursor: pointer;
             transition: all 0.3s ease;
+            color: var(--text-primary);
         }
 
         .theme-toggle:hover {
             background: var(--card-bg);
             transform: translateY(-2px);
+        }
+
+        /* User Profile Dropdown */
+        .user-profile {
+            position: relative;
+        }
+
+        .profile-trigger {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .profile-trigger:hover {
+            background: var(--card-bg);
+        }
+
+        .profile-avatar {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .profile-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .profile-role {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .profile-dropdown {
+            position: absolute;
+            top: calc(100% + 0.5rem);
+            right: 0;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .user-profile:hover .profile-dropdown,
+        .profile-dropdown:hover {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            padding: 0.75rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .dropdown-item:first-child {
+            border-radius: 12px 12px 0 0;
+        }
+
+        .dropdown-item:last-child {
+            border-radius: 0 0 12px 12px;
+        }
+
+        .dropdown-item:hover {
+            background: var(--glass-bg);
+        }
+
+        .dropdown-item.danger {
+            color: var(--danger);
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: var(--glass-border);
+            margin: 0.5rem 0;
+        }
+
+        /* View Toggle */
+        .view-toggle {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 0.5rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .view-toggle button {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .view-toggle button.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .view-toggle button:hover:not(.active) {
+            background: var(--glass-bg);
+            color: var(--text-primary);
         }
 
         /* Main Container */
@@ -306,8 +443,37 @@
 
         .card p {
             color: var(--text-secondary);
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             line-height: 1.6;
+        }
+
+        /* Video Tutorial Button */
+        .card-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .video-btn {
+            flex: 1;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .video-btn:hover {
+            background: var(--card-bg);
+            transform: translateY(-2px);
         }
 
         .card-button {
@@ -357,69 +523,98 @@
             transform: translateX(5px);
         }
 
-        /* Large Feature Card */
-        .feature-card {
-            grid-column: 1 / -1;
-            background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(124, 58, 237, 0.1));
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 3rem;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
+        /* Admin-only indicator */
+        .card.admin-only {
+            opacity: 0.6;
+            pointer-events: none;
         }
 
-        .feature-card::before {
-            content: '';
+        .card.admin-only .card-badge {
+            background: var(--warning);
+        }
+
+        .admin-lock {
             position: absolute;
-            top: -50%;
-            right: -50%;
+            top: 1rem;
+            right: 1rem;
+            color: var(--warning);
+            font-size: 1.25rem;
+        }
+
+        /* Video Modal */
+        .video-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(79, 70, 229, 0.2), transparent);
-            animation: rotate 20s linear infinite;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
         }
 
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        .video-modal.active {
+            display: flex;
         }
 
-        .feature-content h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--text-primary), var(--accent-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .video-modal-content {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 2rem;
+            max-width: 900px;
+            width: 90%;
+            position: relative;
         }
 
-        .feature-stats {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1rem;
-            margin-top: 2rem;
+        .video-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
         }
 
-        .stat-item {
+        .video-modal-header h3 {
+            font-size: 1.5rem;
+        }
+
+        .modal-close {
             background: var(--glass-bg);
-            padding: 1rem;
-            border-radius: 12px;
-            border: 1px solid var(--glass-border);
+            border: none;
+            color: var(--text-primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
         }
 
-        .stat-item .number {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--accent-color);
+        .modal-close:hover {
+            background: var(--danger);
+            transform: rotate(90deg);
         }
 
-        .stat-item .label {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 16px;
+            background: #000;
+        }
+
+        .video-container iframe,
+        .video-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
 
         /* AI Chat Button (Floating) */
@@ -441,6 +636,7 @@
             transition: all 0.3s ease;
             z-index: 1000;
             animation: pulse 2s infinite;
+            text-decoration: none;
         }
 
         .ai-chat-fab:hover {
@@ -511,6 +707,10 @@
             .search-bar input:focus {
                 width: 250px;
             }
+
+            .profile-info {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -528,15 +728,50 @@
                     <i class="fas fa-search"></i>
                     <input type="text" placeholder="Search apps, environments, or teams...">
                 </div>
-                <button class="theme-toggle">
-                    <i class="fas fa-moon"></i>
-                </button>
+                
+                <div class="view-toggle">
+                    <button class="active" onclick="switchView('user')">
+                        <i class="fas fa-user"></i> User
+                    </button>
+                    <button onclick="switchView('admin')">
+                        <i class="fas fa-user-shield"></i> Admin
+                    </button>
+                </div>
+
                 <button class="theme-toggle">
                     <i class="fas fa-bell"></i>
                 </button>
-                <button class="theme-toggle">
-                    <i class="fas fa-user-circle"></i>
-                </button>
+
+                <div class="user-profile">
+                    <div class="profile-trigger">
+                        <div class="profile-avatar">JD</div>
+                        <div class="profile-info">
+                            <div class="profile-name">John Doe</div>
+                            <div class="profile-role" id="currentRole">User</div>
+                        </div>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="profile-dropdown">
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-user-circle"></i>
+                            <span>Profile</span>
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item" id="roleSwitch">
+                            <i class="fas fa-exchange-alt"></i>
+                            <span id="roleSwitchText">Switch to Admin</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item danger">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </a>
+                    </div>
+                </div>
             </div>
         </nav>
     </header>
@@ -546,14 +781,14 @@
             <h1>Network Automation Hub</h1>
             <p>Empower your network engineers with cutting-edge automation tools and intelligent monitoring</p>
             <div class="tags">
-                <span class="tag"><i class="fas fa-code"></i> 7 apps</span>
-                <span class="tag"><i class="fas fa-plug"></i> 7 accessible</span>
+                <span class="tag"><i class="fas fa-code"></i> 9 apps</span>
+                <span class="tag"><i class="fas fa-plug"></i> 9 accessible</span>
             </div>
         </section>
 
-        <div class="cards-grid">
+        <div class="cards-grid" id="cardsGrid">
             <!-- Operational Metrics Card -->
-            <div class="card scroll-reveal">
+            <div class="card scroll-reveal" data-role="user">
                 <div class="card-icon">
                     <i class="fas fa-chart-line"></i>
                 </div>
@@ -564,13 +799,19 @@
                     </div>
                 </div>
                 <p>Real-time network performance analytics with AI-powered insights and predictive monitoring</p>
+                <div class="card-actions">
+                    <button class="video-btn" onclick="openVideo('metrics', 'Operational Metrics Tutorial')">
+                        <i class="fas fa-play-circle"></i>
+                        Tutorial
+                    </button>
+                </div>
                 <button class="card-button" onclick="openApp('metrics')">
                     Open Dashboard <i class="fas fa-arrow-right"></i>
                 </button>
             </div>
 
             <!-- ACL Live Checker Card -->
-            <div class="card scroll-reveal" style="animation-delay: 0.1s">
+            <div class="card scroll-reveal" style="animation-delay: 0.1s" data-role="user">
                 <div class="card-icon">
                     <i class="fas fa-shield-alt"></i>
                 </div>
@@ -581,13 +822,19 @@
                     </div>
                 </div>
                 <p>Leverage LLMs to intelligently debug and validate access control lists in real-time</p>
+                <div class="card-actions">
+                    <button class="video-btn" onclick="openVideo('acl', 'ACL Live Checker Tutorial')">
+                        <i class="fas fa-play-circle"></i>
+                        Tutorial
+                    </button>
+                </div>
                 <button class="card-button" onclick="openApp('acl')">
                     Open Tool <i class="fas fa-arrow-right"></i>
                 </button>
             </div>
 
             <!-- MAC Address Management Card -->
-            <div class="card scroll-reveal" style="animation-delay: 0.2s">
+            <div class="card scroll-reveal" style="animation-delay: 0.2s" data-role="user">
                 <div class="card-icon">
                     <i class="fas fa-network-wired"></i>
                 </div>
@@ -598,13 +845,19 @@
                     </div>
                 </div>
                 <p>Centralized MAC address tracking and management across your entire network infrastructure</p>
+                <div class="card-actions">
+                    <button class="video-btn" onclick="openVideo('mac', 'MAC Address Management Tutorial')">
+                        <i class="fas fa-play-circle"></i>
+                        Tutorial
+                    </button>
+                </div>
                 <button class="card-button" onclick="openApp('mac')">
                     Open Manager <i class="fas fa-arrow-right"></i>
                 </button>
             </div>
 
             <!-- Config Validation Card -->
-            <div class="card scroll-reveal" style="animation-delay: 0.3s">
+            <div class="card scroll-reveal" style="animation-delay: 0.3s" data-role="user">
                 <div class="card-icon">
                     <i class="fas fa-check-circle"></i>
                 </div>
@@ -615,13 +868,19 @@
                     </div>
                 </div>
                 <p>Validate network configurations against best practices and compliance standards automatically</p>
+                <div class="card-actions">
+                    <button class="video-btn" onclick="openVideo('config', 'Config Validation Tutorial')">
+                        <i class="fas fa-play-circle"></i>
+                        Tutorial
+                    </button>
+                </div>
                 <button class="card-button" onclick="openApp('config')">
                     Validate Now <i class="fas fa-arrow-right"></i>
                 </button>
             </div>
 
             <!-- Network Topology Card -->
-            <div class="card scroll-reveal" style="animation-delay: 0.4s">
+            <div class="card scroll-reveal" style="animation-delay: 0.4s" data-role="user">
                 <div class="card-icon">
                     <i class="fas fa-project-diagram"></i>
                 </div>
@@ -632,13 +891,19 @@
                     </div>
                 </div>
                 <p>Interactive 3D visualization of your network architecture with live status indicators</p>
+                <div class="card-actions">
+                    <button class="video-btn" onclick="openVideo('topology', 'Network Topology Tutorial')">
+                        <i class="fas fa-play-circle"></i>
+                        Tutorial
+                    </button>
+                </div>
                 <button class="card-button" onclick="openApp('topology')">
                     View Topology <i class="fas fa-arrow-right"></i>
                 </button>
             </div>
 
             <!-- Automation Scripts Card -->
-            <div class="card scroll-reveal" style="animation-delay: 0.5s">
+            <div class="card scroll-reveal" style="animation-delay: 0.5s" data-role="user">
                 <div class="card-icon">
                     <i class="fas fa-robot"></i>
                 </div>
@@ -649,53 +914,128 @@
                     </div>
                 </div>
                 <p>Pre-built and custom automation scripts for common network operations and workflows</p>
+                <div class="card-actions">
+                    <button class="video-btn" onclick="openVideo('scripts', 'Automation Scripts Tutorial')">
+                        <i class="fas fa-play-circle"></i>
+                        Tutorial
+                    </button>
+                </div>
                 <button class="card-button" onclick="openApp('scripts')">
                     Browse Scripts <i class="fas fa-arrow-right"></i>
                 </button>
             </div>
 
-            <!-- Feature Card -->
-            <div class="feature-card scroll-reveal">
-                <div class="feature-content">
-                    <h2>AI-Powered Network Intelligence</h2>
-                    <p style="color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 1rem;">
-                        Experience the future of network management with our GNSA AI Assistant. Get instant insights, 
-                        troubleshooting help, and automated solutions powered by advanced machine learning.
-                    </p>
-                    <div class="feature-stats">
-                        <div class="stat-item">
-                            <div class="number">99.9%</div>
-                            <div class="label">Uptime</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="number">2.3s</div>
-                            <div class="label">Avg Response</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="number">15K+</div>
-                            <div class="label">Devices Managed</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="number">500+</div>
-                            <div class="label">Automations</div>
-                        </div>
+            <!-- KSI Generation Card (Admin Only) -->
+            <div class="card scroll-reveal" style="animation-delay: 0.6s" data-role="admin">
+                <i class="fas fa-lock admin-lock"></i>
+                <div class="card-icon">
+                    <i class="fas fa-key"></i>
+                </div>
+                <div class="card-header">
+                    <div>
+                        <h3>KSI Generation</h3>
+                        <span class="card-badge">ADMIN</span>
                     </div>
                 </div>
-                <div>
-                    <img src="https://cdn.dribbble.com/userupload/10777663/file/original-c212c0a3f8cc5d2a8bc958bec5e302f4.png" 
-                         alt="AI Dashboard" 
-                         style="width: 100%; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.5);">
+                <p>Generate and manage Keystore Infrastructure for secure network communications</p>
+                <div class="card-actions">
+                    <button class="video-btn" onclick="openVideo('ksi', 'KSI Generation Tutorial')">
+                        <i class="fas fa-play-circle"></i>
+                        Tutorial
+                    </button>
                 </div>
+                <button class="card-button" onclick="openApp('ksi')">
+                    Open Tool <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- Certificate Management Card (Admin Only) -->
+            <div class="card scroll-reveal" style="animation-delay: 0.7s" data-role="admin">
+                <i class="fas fa-lock admin-lock"></i>
+                <div class="card-icon">
+                    <i class="fas fa-certificate"></i>
+                </div>
+                <div class="card-header">
+                    <div>
+                        <h3>Certificate Management</h3>
+                        <span class="card-badge">ADMIN</span>
+                    </div>
+                </div>
+                <p>Manage SSL/TLS certificates across your infrastructure with automated renewal</p>
+                <div class="card-actions">
+                    <button class="video-btn" onclick="openVideo('cert', 'Certificate Management Tutorial')">
+                        <i class="fas fa-play-circle"></i>
+                        Tutorial
+                    </button>
+                </div>
+                <button class="card-button" onclick="openApp('cert')">
+                    Open Manager <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- Elastic IP Management Card (Admin Only) -->
+            <div class="card scroll-reveal" style="animation-delay: 0.8s" data-role="admin">
+                <i class="fas fa-lock admin-lock"></i>
+                <div class="card-icon">
+                    <i class="fas fa-globe"></i>
+                </div>
+                <div class="card-header">
+                    <div>
+                        <h3>Elastic IP Management</h3>
+                        <span class="card-badge">ADMIN</span>
+                    </div>
+                </div>
+                <p>Manage elastic IP addresses and network interfaces for cloud infrastructure</p>
+                <div class="card-actions">
+                    <button class="video-btn" onclick="openVideo('eip', 'Elastic IP Management Tutorial')">
+                        <i class="fas fa-play-circle"></i>
+                        Tutorial
+                    </button>
+                </div>
+                <button class="card-button" onclick="openApp('eip')">
+                    Open Manager <i class="fas fa-arrow-right"></i>
+                </button>
             </div>
         </div>
     </div>
 
     <!-- Floating AI Chat Button -->
-    <div class="ai-chat-fab" onclick="openAIChat()">
+    <a href="ai-assistant.html" class="ai-chat-fab">
         <i class="fas fa-robot"></i>
+    </a>
+
+    <!-- Video Modal -->
+    <div class="video-modal" id="videoModal">
+        <div class="video-modal-content">
+            <div class="video-modal-header">
+                <h3 id="videoTitle">Tutorial</h3>
+                <button class="modal-close" onclick="closeVideo()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="video-container">
+                <iframe id="videoPlayer" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
     </div>
 
     <script>
+        // Current user role
+        let currentRole = 'user';
+
+        // Video URLs for each app (replace with your actual video URLs)
+        const videoUrls = {
+            'metrics': 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+            'acl': 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+            'mac': 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+            'config': 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+            'topology': 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+            'scripts': 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+            'ksi': 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+            'cert': 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+            'eip': 'https://www.youtube.com/embed/dQw4w9WgXcQ'
+        };
+
         // Scroll Reveal Animation
         const observerOptions = {
             threshold: 0.1,
@@ -717,6 +1057,8 @@
         // 3D Card Effect
         document.querySelectorAll('.card').forEach(card => {
             card.addEventListener('mousemove', (e) => {
+                if (card.classList.contains('admin-only')) return;
+                
                 const rect = card.getBoundingClientRect();
                 const x = e.clientX - rect.left;
                 const y = e.clientY - rect.top;
@@ -735,20 +1077,101 @@
             });
         });
 
-        // Open AI Chat
-        function openAIChat() {
-            window.location.href = 'ai-assistant.html';
+        // Switch View (User/Admin)
+        function switchView(role) {
+            currentRole = role;
+            
+            // Update button states
+            document.querySelectorAll('.view-toggle button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update role display
+            document.getElementById('currentRole').textContent = role.charAt(0).toUpperCase() + role.slice(1);
+            
+            // Update role switch text
+            const switchText = role === 'user' ? 'Switch to Admin' : 'Switch to User';
+            document.getElementById('roleSwitchText').textContent = switchText;
+            
+            // Filter cards based on role
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                const cardRole = card.getAttribute('data-role');
+                
+                if (role === 'admin') {
+                    // Admin sees everything
+                    card.classList.remove('admin-only');
+                    card.style.display = 'block';
+                } else {
+                    // User only sees user-role cards
+                    if (cardRole === 'admin') {
+                        card.classList.add('admin-only');
+                    } else {
+                        card.classList.remove('admin-only');
+                        card.style.display = 'block';
+                    }
+                }
+            });
+            
+            // Update tags count
+            const visibleCards = document.querySelectorAll('.card:not(.admin-only)').length;
+            document.querySelector('.tags').innerHTML = `
+                <span class="tag"><i class="fas fa-code"></i> ${visibleCards} apps</span>
+                <span class="tag"><i class="fas fa-plug"></i> ${visibleCards} accessible</span>
+            `;
         }
+
+        // Role switch from dropdown
+        document.getElementById('roleSwitch').addEventListener('click', function(e) {
+            e.preventDefault();
+            const newRole = currentRole === 'user' ? 'admin' : 'user';
+            
+            // Find and click the appropriate view toggle button
+            const buttons = document.querySelectorAll('.view-toggle button');
+            buttons.forEach(btn => {
+                if (btn.textContent.toLowerCase().includes(newRole)) {
+                    btn.click();
+                }
+            });
+        });
+
+        // Open Video Modal
+        function openVideo(appId, title) {
+            const modal = document.getElementById('videoModal');
+            const videoPlayer = document.getElementById('videoPlayer');
+            const videoTitle = document.getElementById('videoTitle');
+            
+            videoTitle.textContent = title;
+            videoPlayer.src = videoUrls[appId];
+            modal.classList.add('active');
+        }
+
+        // Close Video Modal
+        function closeVideo() {
+            const modal = document.getElementById('videoModal');
+            const videoPlayer = document.getElementById('videoPlayer');
+            
+            modal.classList.remove('active');
+            videoPlayer.src = '';
+        }
+
+        // Close modal on outside click
+        document.getElementById('videoModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeVideo();
+            }
+        });
 
         // Open App
         function openApp(appName) {
             console.log(`Opening ${appName} application...`);
-            alert(`Opening ${appName} application...`);
+            alert(`Opening ${appName} application...\n\nIn production, this would navigate to the actual application.`);
         }
 
-        // Theme Toggle
-        document.querySelector('.theme-toggle').addEventListener('click', function() {
-            document.body.classList.toggle('light-theme');
+        // Initialize with user view
+        window.addEventListener('DOMContentLoaded', function() {
+            switchView('user');
         });
     </script>
 </body>

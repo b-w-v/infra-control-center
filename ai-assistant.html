@@ -105,11 +105,13 @@
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
+            font-size: 0.95rem;
         }
 
         .back-button:hover {
             background: var(--card-bg);
             transform: translateX(-5px);
+            border-color: var(--primary-color);
         }
 
         .header-title {
@@ -408,7 +410,7 @@
 
     <header>
         <div class="header-content">
-            <a href="infra-control-center.html" class="back-button">
+            <a href="index.html" class="back-button">
                 <i class="fas fa-arrow-left"></i>
                 Back to Dashboard
             </a>
@@ -520,7 +522,7 @@
             if (message) {
                 console.log('Sending message:', message);
                 // Here you would integrate with your actual AI backend
-                alert('Message sent to GNSA AI: ' + message);
+                alert('Message sent to GNSA AI: ' + message + '\n\nIn production, this would send to your AI backend and display the response.');
                 chatInput.value = '';
             }
         }
