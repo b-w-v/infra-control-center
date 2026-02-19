@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infra Control Center - Network Automation Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #4F46E5;
+            --secondary-color: #7C3AED;
+            --accent-color: #06B6D4;
+            --dark-bg: #0F172A;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --text-primary: #F1F5F9;
+            --text-secondary: #94A3B8;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #0F172A 100%);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bg-animation::before,
+        .bg-animation::after {
+            content: '';
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.15;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .bg-animation::before {
+            background: radial-gradient(circle, var(--primary-color), transparent);
+            top: -200px;
+            left: -200px;
+            animation-delay: 0s;
+        }
+
+        .bg-animation::after {
+            background: radial-gradient(circle, var(--secondary-color), transparent);
+            bottom: -200px;
+            right: -200px;
+            animation-delay: 5s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(100px, -100px) scale(1.1); }
+            66% { transform: translate(-100px, 100px) scale(0.9); }
+        }
+
+        /* Header */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .logo i {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            padding: 0.5rem;
+            border-radius: 12px;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .search-bar {
+            position: relative;
+        }
+
+        .search-bar input {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 0.75rem 1rem 0.75rem 3rem;
+            color: var(--text-primary);
+            width: 300px;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            width: 400px;
+            background: var(--card-bg);
+        }
+
+        .search-bar i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        .theme-toggle {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background: var(--card-bg);
+            transform: translateY(-2px);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            margin-bottom: 4rem;
+            perspective: 1000px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease 0.2s backwards;
+        }
+
+        .tags {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease 0.4s backwards;
+        }
+
+        .tag {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .tag:hover {
+            background: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(79, 70, 229, 0.4);
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: -1;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            border-color: var(--primary-color);
+        }
+
+        .card:hover::before {
+            opacity: 0.1;
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .card:hover .card-icon {
+            transform: rotateY(360deg) scale(1.1);
+            box-shadow: 0 10px 30px rgba(79, 70, 229, 0.6);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .card-badge {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .card-button {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        .card-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .card-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(79, 70, 229, 0.5);
+        }
+
+        .card-button i {
+            margin-left: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .card-button:hover i {
+            transform: translateX(5px);
+        }
+
+        /* Large Feature Card */
+        .feature-card {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.1), rgba(124, 58, 237, 0.1));
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 3rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(79, 70, 229, 0.2), transparent);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .feature-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .feature-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            background: var(--glass-bg);
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .stat-item .number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        .stat-item .label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* AI Chat Button (Floating) */
+        .ai-chat-fab {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 10px 40px rgba(79, 70, 229, 0.6);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            animation: pulse 2s infinite;
+        }
+
+        .ai-chat-fab:hover {
+            transform: scale(1.15) rotate(10deg);
+            box-shadow: 0 15px 50px rgba(79, 70, 229, 0.8);
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 10px 40px rgba(79, 70, 229, 0.6); }
+            50% { box-shadow: 0 10px 60px rgba(79, 70, 229, 0.9); }
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Scroll Reveal */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(50px) scale(0.95);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .feature-card {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-bar input {
+                width: 200px;
+            }
+
+            .search-bar input:focus {
+                width: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+
+    <header>
+        <nav>
+            <div class="logo">
+                <i class="fab fa-linkedin"></i>
+                <span>Infra Control Center</span>
+            </div>
+            <div class="nav-actions">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search apps, environments, or teams...">
+                </div>
+                <button class="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="theme-toggle">
+                    <i class="fas fa-bell"></i>
+                </button>
+                <button class="theme-toggle">
+                    <i class="fas fa-user-circle"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <section class="hero">
+            <h1>Network Automation Hub</h1>
+            <p>Empower your network engineers with cutting-edge automation tools and intelligent monitoring</p>
+            <div class="tags">
+                <span class="tag"><i class="fas fa-code"></i> 7 apps</span>
+                <span class="tag"><i class="fas fa-plug"></i> 7 accessible</span>
+            </div>
+        </section>
+
+        <div class="cards-grid">
+            <!-- Operational Metrics Card -->
+            <div class="card scroll-reveal">
+                <div class="card-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="card-header">
+                    <div>
+                        <h3>Operational Metrics</h3>
+                        <span class="card-badge">GNSA</span>
+                    </div>
+                </div>
+                <p>Real-time network performance analytics with AI-powered insights and predictive monitoring</p>
+                <button class="card-button" onclick="openApp('metrics')">
+                    Open Dashboard <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- ACL Live Checker Card -->
+            <div class="card scroll-reveal" style="animation-delay: 0.1s">
+                <div class="card-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="card-header">
+                    <div>
+                        <h3>ACL Live Checker</h3>
+                        <span class="card-badge">GNSA</span>
+                    </div>
+                </div>
+                <p>Leverage LLMs to intelligently debug and validate access control lists in real-time</p>
+                <button class="card-button" onclick="openApp('acl')">
+                    Open Tool <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- MAC Address Management Card -->
+            <div class="card scroll-reveal" style="animation-delay: 0.2s">
+                <div class="card-icon">
+                    <i class="fas fa-network-wired"></i>
+                </div>
+                <div class="card-header">
+                    <div>
+                        <h3>MAC Address Manager</h3>
+                        <span class="card-badge">GNSA</span>
+                    </div>
+                </div>
+                <p>Centralized MAC address tracking and management across your entire network infrastructure</p>
+                <button class="card-button" onclick="openApp('mac')">
+                    Open Manager <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- Config Validation Card -->
+            <div class="card scroll-reveal" style="animation-delay: 0.3s">
+                <div class="card-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="card-header">
+                    <div>
+                        <h3>Config Validation</h3>
+                        <span class="card-badge">GNSA</span>
+                    </div>
+                </div>
+                <p>Validate network configurations against best practices and compliance standards automatically</p>
+                <button class="card-button" onclick="openApp('config')">
+                    Validate Now <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- Network Topology Card -->
+            <div class="card scroll-reveal" style="animation-delay: 0.4s">
+                <div class="card-icon">
+                    <i class="fas fa-project-diagram"></i>
+                </div>
+                <div class="card-header">
+                    <div>
+                        <h3>Network Topology</h3>
+                        <span class="card-badge">GNSA</span>
+                    </div>
+                </div>
+                <p>Interactive 3D visualization of your network architecture with live status indicators</p>
+                <button class="card-button" onclick="openApp('topology')">
+                    View Topology <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- Automation Scripts Card -->
+            <div class="card scroll-reveal" style="animation-delay: 0.5s">
+                <div class="card-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="card-header">
+                    <div>
+                        <h3>Automation Scripts</h3>
+                        <span class="card-badge">GNSA</span>
+                    </div>
+                </div>
+                <p>Pre-built and custom automation scripts for common network operations and workflows</p>
+                <button class="card-button" onclick="openApp('scripts')">
+                    Browse Scripts <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- Feature Card -->
+            <div class="feature-card scroll-reveal">
+                <div class="feature-content">
+                    <h2>AI-Powered Network Intelligence</h2>
+                    <p style="color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 1rem;">
+                        Experience the future of network management with our GNSA AI Assistant. Get instant insights, 
+                        troubleshooting help, and automated solutions powered by advanced machine learning.
+                    </p>
+                    <div class="feature-stats">
+                        <div class="stat-item">
+                            <div class="number">99.9%</div>
+                            <div class="label">Uptime</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="number">2.3s</div>
+                            <div class="label">Avg Response</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="number">15K+</div>
+                            <div class="label">Devices Managed</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="number">500+</div>
+                            <div class="label">Automations</div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <img src="https://cdn.dribbble.com/userupload/10777663/file/original-c212c0a3f8cc5d2a8bc958bec5e302f4.png" 
+                         alt="AI Dashboard" 
+                         style="width: 100%; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.5);">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating AI Chat Button -->
+    <div class="ai-chat-fab" onclick="openAIChat()">
+        <i class="fas fa-robot"></i>
+    </div>
+
+    <script>
+        // Scroll Reveal Animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // 3D Card Effect
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+            });
+        });
+
+        // Open AI Chat
+        function openAIChat() {
+            window.location.href = 'ai-assistant.html';
+        }
+
+        // Open App
+        function openApp(appName) {
+            console.log(`Opening ${appName} application...`);
+            alert(`Opening ${appName} application...`);
+        }
+
+        // Theme Toggle
+        document.querySelector('.theme-toggle').addEventListener('click', function() {
+            document.body.classList.toggle('light-theme');
+        });
+    </script>
+</body>
+</html>

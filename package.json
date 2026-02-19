@@ -1,0 +1,30 @@
+{
+  "name": "infra-control-center",
+  "version": "1.0.0",
+  "description": "A modern, AI-powered network automation portal with 3D effects and glassmorphism design",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "serve": "npx http-server -p 8000",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/b-w-v/infra-control-center.git"
+  },
+  "keywords": [
+    "network-automation",
+    "ai-assistant",
+    "dashboard",
+    "glassmorphism",
+    "3d-effects",
+    "network-monitoring",
+    "infra-management"
+  ],
+  "author": "b-w-v",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/b-w-v/infra-control-center/issues"
+  },
+  "homepage": "https://github.com/b-w-v/infra-control-center#readme"
+}
